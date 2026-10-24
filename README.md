@@ -51,4 +51,4 @@ output/
 ## 相关链接
 
 - GitHub 仓库：[clzzzs/stm32f103-oled-display-lab](https://github.com/clzzzs/stm32f103-oled-display-lab)
-- 博客（CSDN）：（待发布后填写）
+- 博客（CSDN）：[实验3 OLED 显示实验](https://blog.csdn.net/2401_89763261/article/details/168976415)
