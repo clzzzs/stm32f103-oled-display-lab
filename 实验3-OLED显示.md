@@ -103,20 +103,20 @@ PCtoLCD2002 里必须这样设置，才能和 SSD1306 的显存格式对上：
 | GPIO Pull-up/Pull-down | Pull-up | 模块板载 4.7 kΩ 上拉 + 内部上拉双保险 |
 | Maximum output speed | High | 位翻转要快，边沿才不拖沓 |
 
-![PB8/PB9 引脚配置](images/09-CubeMX-引脚图PB8PB9软件I2C.png)
+![PB8/PB9 引脚配置](images/05-CubeMX-引脚图PB8PB9软件I2C.png)
 *图 5　引脚图上把 PB8、PB9 设为 GPIO_Output（软件 I2C 的 SCL/SDA）*
 
-![PB8/PB9 输出参数](images/10-CubeMX-PB8PB9参数面板.png)
+![PB8/PB9 输出参数](images/06-CubeMX-PB8PB9参数面板.png)
 *图 6　PB8/PB9 参数：开漏输出、上拉、初始高电平、高速*
 
 **Project Manager**：`Project Name = task1`、`Project Location = F:\Fundamentals_of_Embedded_Systems\expr3`、`Application Structure = Advanced`、`Toolchain/IDE = MDK-ARM`、`Min Version = V5.32`、`Firmware Package = STM32Cube FW_F1 V1.8.7`。
 
-![工程管理器配置](images/05-CubeMX-工程管理器配置MDK-ARM.png)
+![工程管理器配置](images/07-CubeMX-工程管理器配置MDK-ARM.png)
 *图 7　Project Manager：MDK-ARM V5.32、FW_F1 V1.8.7（图中工程名最初写成 task1_1，后改回 task1）*
 
 **Code Generator** 勾选四项：`Copy only the necessary library files`、`Generate peripheral initialization as a pair of '.c/.h' files per peripheral`、`Keep User Code when re-generating`、`Delete previously generated files when not re-generated`，然后 `GENERATE CODE`。
 
-![代码生成器配置](images/06-CubeMX-代码生成器配置.png)
+![代码生成器配置](images/08-CubeMX-代码生成器配置.png)
 *图 8　Code Generator 的四个勾选项*
 
 ### 3.2 把标准库驱动裁剪成 HAL 版
@@ -182,7 +182,7 @@ static void OLED_I2C_SendByte(uint8_t Byte)
 
 点「生成字模」，每个字得到 32 字节（前 16 字节上半页、后 16 字节下半页）。本次共 21 个字，正好覆盖姓名与后面滚动长句用到的全部汉字与全角标点。
 
-![PCtoLCD2002 取模](images/11-取模软件-汉字点阵与字模数据.png)
+![PCtoLCD2002 取模](images/09-取模软件-汉字点阵与字模数据.png)
 *图 9　PCtoLCD2002：宋体 16×16，上方为 21 个字的点阵预览，下方为 ASM 格式字模*
 
 ### 3.4 建字库表与显示函数
@@ -210,12 +210,12 @@ const OLED_CN_Glyph OLED_CN_Table[OLED_CN_NUM] =
 
 字库头文件加进 Keil 的 `bsp` 分组：
 
-![Keil 工程树](images/12-Keil-bsp分组含OLED字库.png)
+![Keil 工程树](images/10-Keil-bsp分组含OLED字库.png)
 *图 10　Keil 工程树：bsp 分组下的 6 个源文件，含新加的 oled_cn_font.h*
 
 `oled.c` 里引入两套字库（ASCII 8×16 与汉字 16×16），并在底层 `OLED_ShowChinese()` 之上增加“查表 + 连续显示”两个函数：
 
-![oled.c 引入字库](images/13-Keil-oled.c引入字库.png)
+![oled.c 引入字库](images/11-Keil-oled.c引入字库.png)
 *图 11　oled.c 顶部三行 include：ASCII 字库 + 汉字字库*
 
 ```c
@@ -270,12 +270,12 @@ void OLED_ShowChinese(uint8_t Line, uint8_t Column, const uint8_t *Font)
 }
 ```
 
-![oled.c 汉字显示函数](images/14-Keil-汉字显示函数.png)
+![oled.c 汉字显示函数](images/12-Keil-汉字显示函数.png)
 *图 12　oled.c 中的 OLED_ShowChinese() 与 OLED_ShowCNChar()*
 
 对应在 `oled.h` 里增加三个声明：
 
-![oled.h 函数声明](images/15-Keil-oled.h函数声明.png)
+![oled.h 函数声明](images/13-Keil-oled.h函数声明.png)
 *图 13　oled.h 中新增的 OLED_ShowChinese / OLED_ShowCNChar / OLED_ShowCNString*
 
 ### 3.5 应用层与实验现象
@@ -324,7 +324,7 @@ void loop(void)
 
 下载后屏上显示两行：
 
-![OLED 显示学号姓名](images/16-OLED显示学号姓名.jpg)
+![OLED 显示学号姓名](images/14-OLED显示学号姓名.jpg)
 *图 14　实物：屏上清晰显示 ID:632407030121 与 Name:陈立周（8×16 ASCII + 16×16 汉字）*
 
 
@@ -379,7 +379,7 @@ HAL_Delay(5000);
 OLED_ScrollH_Stop();
 ```
 
-![硬件水平滚动现象](images/18-硬件水平滚动-短句Hello重庆交大.gif)
+![硬件水平滚动现象](images/15-硬件水平滚动-短句Hello重庆交大.gif)
 
 *图 15　硬件水平滚动：页 4~5 上的短句 `Hello，重庆交大` 整行循环平移，先向右后向左
 
@@ -450,7 +450,7 @@ for (x = SCROLL_TEXT_WIDTH - 128; x > 0; x -= 2)
 }
 ```
 
-![软件滚屏现象](images/19-软件滚屏-长句左右往复.gif)
+![软件滚屏现象](images/16-软件滚屏-长句左右往复.gif)
 
 *图 16　软件滚屏：352 像素的长句自右向左滚过屏幕，滚到句尾后再反向滚回；一屏只显示 128 像素
 
@@ -486,12 +486,12 @@ u8g2 是面向单色屏的开源图形库，分两层：**u8x8** 负责底层通
 
 从 GitHub（<https://github.com/olikraus/u8g2>）→ `Code → Download ZIP` 下载 master 分支（本机 84.2 MB）。
 
-![GitHub 下载 u8g2 源码](images/20-GitHub-u8g2源码下载zip.png)
+![GitHub 下载 u8g2 源码](images/17-GitHub-u8g2源码下载zip.png)
 *图 17　在 GitHub 上点“下载 zip”获取 u8g2 源码*
 
 解压后只需要 **`csrc/`** 目录（138 个文件），其中 `u8g2_fonts.c` 有 38.8 MB。
 
-![u8g2 解压目录](images/21-u8g2源码解压目录.png)
+![u8g2 解压目录](images/18-u8g2源码解压目录.png)
 *图 18　解压后的 u8g2-master 目录，移植只关心 csrc*
 
 ### 5.4 裁剪 u8g2 库（博客 3.2 的三步）
@@ -506,24 +506,24 @@ u8g2_button.c  u8g2_input_value.c  u8g2_message.c  u8g2_selection_list.c
 u8x8_debounce.c  u8x8_input_value.c  u8x8_message.c  u8x8_selection_list.c
 ```
 
-![复制 csrc 到 bsp](images/25-bsp目录-复制csrc后.png)
+![复制 csrc 到 bsp](images/19-bsp目录-复制csrc后.png)
 *图 19　把 csrc 的文件复制进 bsp（图中还能看到 mui/u8log/u8g2_fonts.c 等待删文件）*
 
 **② 驱动文件只留一个**：搜索 `u8x8_d_`，除 **`u8x8_d_ssd1306_128x64_noname.c`** 外全部删除（SSD1305/SSD1309/SH1106/ST7565…共一百多个）。
 
-![只保留 SSD1306 驱动](images/28-搜索u8x8_d只留ssd1306.png)
+![只保留 SSD1306 驱动](images/20-搜索u8x8_d只留ssd1306.png)
 *图 20　按 `u8x8_d_` 搜索，只保留 SSD1306 128×64 的驱动*
 
 **③ 三个大文件用脚本抽取**：`u8g2_d_setup.c`（456 KB）、`u8g2_d_memory.c`（40 KB）、`u8g2_fonts.c`（38.8 MB）。原版直接放进工程会有两个后果：前两个引用了已删除的驱动，链接时报 `undefined symbol`；字体文件远超 64 KB Flash，实测 Keil 链接器**不会**自动丢弃未使用的 const 数组。所以先删掉原版，再由脚本从官方源码里“整段复制”出所需部分。
 
-![删除三个大文件](images/27-删除三个大文件.png)
+![删除三个大文件](images/21-删除三个大文件.png)
 *图 21　先删掉三个官方大文件（后面由脚本生成精简版）*
 
 ### 5.4.1 裁剪后的文件清单
 
 裁剪完成后 `bsp\` 共 **37 个文件**：
 
-![裁剪后的 bsp 目录](images/30-bsp目录-精简后33个文件.png)
+![裁剪后的 bsp 目录](images/22-bsp目录-精简后33个文件.png)
 *图 22　裁剪后的 bsp（33 个文件；随后又加入 test.c/h、stm32_u8g2.c/h 共 37 个）*
 
 ### 5.4.2 裁剪脚本（从官方源码抽取，代码原样保留）
@@ -639,7 +639,7 @@ if __name__ == '__main__':
     print('完成，3 个文件已写入：', OUT)
 ```
 
-![裁剪脚本运行输出](images/29-运行trim_u8g2脚本输出.png)
+![裁剪脚本运行输出](images/23-运行trim_u8g2脚本输出.png)
 *图 23　裁剪脚本运行结果：三个大文件被抽取成 0.4 KB / 0.2 KB / 59.5 KB*
 
 ### 5.5 CubeMX 配置（博客第二节）
@@ -653,15 +653,15 @@ if __name__ == '__main__':
 
 原来 PB8/PB9 的软件 I2C 配置点 `Reset_State` 去掉，OLED 两根信号线改接到 **PB10/PB11**。
 
-![CubeMX I2C2 参数](images/22-CubeMX-I2C2参数.png)
+![CubeMX I2C2 参数](images/24-CubeMX-I2C2参数.png)
 
 *图 24　I2C2：Fast Mode、400 kHz*
 
-![PB10/PB11 配置为 I2C2](images/23-CubeMX-PB10PB11配置I2C2.png)
+![PB10/PB11 配置为 I2C2](images/25-CubeMX-PB10PB11配置I2C2.png)
 
 *图 25　PB10、PB11 被配置成 I2C2_SCL / I2C2_SDA*
 
-![CubeMX TIM1 参数](images/24-CubeMX-TIM1参数.png)
+![CubeMX TIM1 参数](images/26-CubeMX-TIM1参数.png)
 
 *图 26　TIM1：PSC = 72-1，ARR = 65535，得到 1 MHz 计数*
 
@@ -673,7 +673,7 @@ if __name__ == '__main__':
 2. `bsp` 分组加入 `my_main.c/h`、`stm32_u8g2.c/h`、`test.c/h`、`oled_cn_font.h`；
 3. `Options for Target → C/C++ → Include Paths` 增加 **`..\bsp`**（u8g2 文件直接放在 bsp 下，不再建子目录）。
 
-![Keil 工程树](images/33-Keil工程树-bsp与u8g2分组.png)
+![Keil 工程树](images/27-Keil工程树-bsp与u8g2分组.png)
 *图 27　Keil 工程树：bsp 分组（应用层/移植层）与 u8g2 分组（库文件）*
 
 ### 5.7 移植层：`stm32_u8g2.c/h`（博客 4.1）
@@ -755,7 +755,7 @@ u8g2_DrawHLine(u8g2, 2, 35, 47);
 u8g2_DrawVLine(u8g2, 45, 32, 12);
 ```
 
-![U8g2 logo 画面](images/34-u8g2-logo画面.gif)
+![U8g2 logo 画面](images/28-u8g2-logo画面.gif)
 
 *图 28　u8g2 demo：U8g2 logo*
 
@@ -770,7 +770,7 @@ draw_cn16(u8g2, 60, 38, 0x7ACB);   /* 立 */
 draw_cn16(u8g2, 78, 38, 0x5468);   /* 周 */
 ```
 
-![u8g2 学号姓名](images/35-u8g2-学号姓名.jpg)
+![u8g2 学号姓名](images/29-u8g2-学号姓名.jpg)
 *图 29　u8g2 显示学号 `632407030121` 与姓名「陈立周」*
 
 **（3）上下、左右滑动（中文长句）**：长句 `Hello，欢迎来到重庆交通大学物联网205实训室！` 由 ASCII 与汉字混排，因此写了两个小工具：`mixed_width()` 计算整串像素宽度（ASCII 8 像素、汉字 16 像素），`draw_mixed()` 按宽度逐字绘制。左右滑动时整串 x 坐标逐帧左移；上下滑动时三行文字 y 坐标逐帧上移。
@@ -800,11 +800,11 @@ for (int off = 0; off <= 3 * 18; off += 2)
 }
 ```
 
-![u8g2 左右滑动](images/36-u8g2-左右滑动-中文长句.gif)
+![u8g2 左右滑动](images/30-u8g2-左右滑动-中文长句.gif)
 
 *图 30　左右滑动：中文长句自右向左滚过屏幕（动图）*
 
-![u8g2 上下滑动](images/37-u8g2-上下滑动-中英混排.gif)
+![u8g2 上下滑动](images/31-u8g2-上下滑动-中英混排.gif)
 
 *图 31　上下滑动：三行中英混排文字向上滚（动图）*
 
@@ -826,7 +826,7 @@ static void draw_avatar(u8g2_t *u8g2, u8g2_uint_t cx, u8g2_uint_t cy, uint8_t bl
 }
 ```
 
-![u8g2 头像动画](images/38-u8g2-头像动画.gif)
+![u8g2 头像动画](images/32-u8g2-头像动画.gif)
 *图 32　头像图案与动态效果：上下浮动 + 眨眼 + 星星闪烁（动图）*
 
 ### 5.9 资源占用与结论
@@ -850,10 +850,10 @@ static void draw_avatar(u8g2_t *u8g2, u8g2_uint_t cx, u8g2_uint_t cy, uint8_t bl
 
 按说明配置软件 I2C 的 SCL/SDA 时，把 **PB8/PB9** 点成了 **PA8/PA9**（PB 与 PA 看混）。参数（开漏、上拉、高速）都对，编译下载也不报错，但接线、注释全对不上；而 PA9/PA10 还是 USART1 的 TX/RX，后面串口实验容易冲突。解决：引脚图上点 PA8/PA9 → `Reset_State` 解除，再点 PB8/PB9 选 `GPIO_Output`，重新设开漏 + 上拉 + 高速。
 
-![误设为 PA8/PA9](images/07-CubeMX-引脚图-PA8PA9误设为GPIO输出.png)
+![误设为 PA8/PA9](images/33-CubeMX-引脚图-PA8PA9误设为GPIO输出.png)
 *图 33　踩坑：引脚图上 PA8/PA9 被误设为 GPIO_Output*
 
-![PA8/PA9 错误参数](images/08-CubeMX-GPIO参数面板-PA8PA9错误配置.png)
+![PA8/PA9 错误参数](images/34-CubeMX-GPIO参数面板-PA8PA9错误配置.png)
 *图 34　踩坑：参数正确但引脚是 PA8/PA9（User Label 为空也能看出还没命名）*
 
 **3. 软件 I2C 一开始没有位延时**

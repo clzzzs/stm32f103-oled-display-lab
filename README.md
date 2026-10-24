@@ -15,7 +15,7 @@
 ## 目录结构
 
 ```
-实验3-OLED显示.md            报告正文（Markdown，34 张图，含 4 张动图）
+实验3-OLED显示.md            报告正文（Markdown，34 张图，含 6 张动图）
 code/                       三个 Keil 工程（task1_1 / task1_3 / task3）
 images/                     报告插图（44 个文件，含同名 .mp4）
 output/
