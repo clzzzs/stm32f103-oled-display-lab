@@ -50,5 +50,5 @@ output/
 
 ## 相关链接
 
-- GitHub 仓库：（待推送后填写）
+- GitHub 仓库：[clzzzs/stm32f103-oled-display-lab](https://github.com/clzzzs/stm32f103-oled-display-lab)
 - 博客（CSDN）：（待发布后填写）
