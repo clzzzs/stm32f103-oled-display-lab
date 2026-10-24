@@ -1,0 +1,107 @@
+@page { size: A4; margin: 18mm 16mm; }
+
+body{
+  font-family: "Microsoft YaHei","微软雅黑",-apple-system,"Segoe UI",sans-serif;
+  font-size: 11pt;
+  line-height: 1.75;
+  color: #1a1a1a;
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+h1{
+  font-size: 20pt;
+  text-align: center;
+  border-bottom: 2px solid #2c6fb1;
+  padding-bottom: 8px;
+}
+
+h2{
+  font-size: 16pt;
+  margin-top: 28px;
+  border-left: 5px solid #2c6fb1;
+  padding-left: 10px;
+  page-break-after: avoid;
+}
+
+h3{
+  font-size: 13.5pt;
+  margin-top: 20px;
+  color: #1f4e79;
+  page-break-after: avoid;
+}
+
+h4{ font-size: 12pt; }
+
+p{ text-align: justify; }
+
+img{
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 10px auto;
+  page-break-inside: avoid;
+}
+
+/* 图注：单独成段的斜体行 */
+p > em:only-child{
+  display: block;
+  text-align: center;
+  color: #666;
+  font-style: normal;
+  font-size: 10pt;
+  margin: -4px 0 16px;
+}
+
+code{
+  font-family: Consolas,"Courier New",monospace;
+  background: #f5f5f5;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 9.5pt;
+}
+
+pre{
+  background: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px 12px;
+  overflow: auto;
+  page-break-inside: avoid;
+}
+
+pre code{
+  background: none;
+  padding: 0;
+  font-size: 9pt;
+  line-height: 1.55;
+}
+
+blockquote{
+  border-left: 4px solid #ccc;
+  margin: 10px 0;
+  padding: 2px 12px;
+  color: #555;
+  background: #fafafa;
+}
+
+table{
+  border-collapse: collapse;
+  width: 100%;
+  margin: 10px 0;
+}
+
+th, td{
+  border: 1px solid #ccc;
+  padding: 6px 8px;
+  font-size: 10pt;
+}
+
+th{ background: #eef4fb; }
+
+/* PDF 中不显示视频播放框，实验现象以 GIF 动图呈现 */
+video{ display: none; }
+
+/* 隐藏 pandoc 自动生成的重复标题 */
+h1.title, header#title-block-header{ display: none; }
